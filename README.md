@@ -34,12 +34,12 @@ IoT 개발자 과정  라즈베리파이 리포지토리
     - 풀업 저항
         - 접지부에 스위치를 연결한 경우에 Floating 현상을 제거하기 위한 방법
 
-        ![풀업저항](https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/풀업 저항.png)
+        <img src="https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/풀업 저항.png" width="730">
 
 
     - 풀다운 저항
         - 전원부에 스위치를 연결한 경우에 Floating 현상을 제거하기 위한 방법
 
-        ![풀다운저항](https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/풀다운 저항.png)
+        <img src="https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/풀다운 저항.png" width="730">
 
         
