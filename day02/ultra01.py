@@ -54,13 +54,13 @@ try:
       time.sleep(0.3)
       Buzz.ChangeFrequency(500)
       time.sleep(0.3)
-    elif distance < 20 and distance >= 10:
+    elif distance < 20:
       Buzz.start(50)     # 부저가 울리기 시작한다
       Buzz.ChangeFrequency(530)
       time.sleep(0.3)
       Buzz.ChangeFrequency(600)
       time.sleep(0.3)
-    elif distance >= 50: # 거리가 50cm 이상이 되면
+    else:
       Buzz.stop()        # 부저가 멈춘다
     time.sleep(1)
 
