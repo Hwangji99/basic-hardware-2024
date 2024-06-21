@@ -18,8 +18,8 @@ def measure():
   return distance                       # 거리 반환
 
 # 핀 설정
-trigPin = 0
-echoPin = 1
+trigPin = 27
+echoPin = 17
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(trigPin, GPIO.OUT)
