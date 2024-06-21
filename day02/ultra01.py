@@ -37,6 +37,7 @@ try:
       Buzz.start(50)
     elif distance >= 50:
       Buzz.stop()
+    time.sleep(1)
 
 except KeyboardInterrupt:
   GPIO.cleanup()
