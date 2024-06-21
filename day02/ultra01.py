@@ -18,18 +18,25 @@ def measure():
   return distance                       # 거리 반환
 
 # 핀 설정
+piezoPin = 13
 trigPin = 27
 echoPin = 17
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
+GPIO.setup(piezoPin, GPIO.OUT)
+
+Buzz = GPIO.PWM(piezoPin, 440)
 
 try:
   while True:
     distance = measure()
     print("Distance: %.2f cm" %distance)
-    time.sleep(1)
+    if distance < 50:
+      Buzz.start(50)
+    elif distance >= 50:
+      Buzz.stop()
 
 except KeyboardInterrupt:
   GPIO.cleanup()
