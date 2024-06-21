@@ -29,14 +29,17 @@ GPIO.setup(piezoPin, GPIO.OUT)
 
 Buzz = GPIO.PWM(piezoPin, 440)
 
+# 참조 파일 pwm01.py
+# 다양한 소리를 내는게 아니기 때문에 melody랑 ChangeFrequency를 안쓴다
+
 try:
   while True:
     distance = measure()
     print("Distance: %.2f cm" %distance)
-    if distance < 50:
-      Buzz.start(50)
-    elif distance >= 50:
-      Buzz.stop()
+    if distance < 50:    # 거리가 50cm 미만이 되면 
+      Buzz.start(50)     # 부저가 울리기 시작한다 
+    elif distance >= 50: # 거리가 50cm 이상이 되면
+      Buzz.stop()        # 부저가 멈춘다
     time.sleep(1)
 
 except KeyboardInterrupt:
