@@ -9,7 +9,7 @@ GPIO.setup(pirPin, GPIO.IN)
 
 try:
   while True:
-    if GPIO.input(pirPin) == False:
+    if GPIO.input(pirPin) == True:
       print("Detected")
       time.sleep(0.5)
 except KeyboardInterrupt:
