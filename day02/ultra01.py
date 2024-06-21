@@ -8,9 +8,9 @@ def measure():
   GPIO.output(trigPin, False)
   start = time.time()            # 현재시간 저장
 
-  While GPIO.input(echoPin) == False:  # echo가 없으면
+  while GPIO.input(echoPin) == False:  # echo가 없으면
     start = time.time()                # 현재 시간을 start 변수에 저장하고
-  While GPIO.input(echoPin) == True:   # echo가 있으면
+  while GPIO.input(echoPin) == True:   # echo가 있으면
     stop = time.time()                 # 현재 시간을 stop 변수에 저장
   elapsed = stop - start               # 걸린 시간을 구하고
   distance = (dlapsed * 19000) / 2     # 초음파 속도를 이용해서 거리 계산
