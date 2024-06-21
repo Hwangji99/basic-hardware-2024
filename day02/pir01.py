@@ -4,7 +4,7 @@ import time
 
 pirPin = 24
 
-GPIO.setmode(BCM)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(pirPin, GPIO.IN)
 
 try:
