@@ -36,8 +36,30 @@ try:
   while True:
     distance = measure()
     print("Distance: %.2f cm" %distance)
-    if distance < 50:    # 거리가 50cm 미만이 되면 
-      Buzz.start(50)     # 부저가 울리기 시작한다 
+    if distance < 50 and distance >= 40:    # 거리가 50cm 미만이 되면 
+      Buzz.start(50)     # 부저가 울리기 시작한다
+      BUzz.ChangeFrequency(220)
+      time.sleep(0.3)
+      BUzz.ChangeFrequency(360)
+      time.sleep(0.3)
+    elif distance < 40 and distance >= 30:
+      Buzz.start(50)     # 부저가 울리기 시작한다
+      BUzz.ChangeFrequency(380)
+      time.sleep(0.3)
+      BUzz.ChangeFrequency(440)
+      time.sleep(0.3)
+    elif distance < 30 and distance >= 20:
+      Buzz.start(50)     # 부저가 울리기 시작한다
+      BUzz.ChangeFrequency(460)
+      time.sleep(0.3)
+      BUzz.ChangeFrequency(500)
+      time.sleep(0.3)
+    elif distance < 20 and distance >= 10:
+      Buzz.start(50)     # 부저가 울리기 시작한다
+      BUzz.ChangeFrequency(530)
+      time.sleep(0.3)
+      BUzz.ChangeFrequency(600)
+      time.sleep(0.3)
     elif distance >= 50: # 거리가 50cm 이상이 되면
       Buzz.stop()        # 부저가 멈춘다
     time.sleep(1)
