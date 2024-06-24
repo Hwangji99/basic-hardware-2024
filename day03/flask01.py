@@ -6,5 +6,5 @@ app = Flask(__name__)    # name 이름을 통한 flask 객체 생성
 def hello():             # hello 함수가 실행되어 
   return "안녕하시렵니까!!"  # 화면에 글이 나타남
 
-if __name__=="__main__":
-  app.run(host="0.0.0.0", debug=True)
+if __name__=="__main__":    # 만약에 main이라는 함수 이름으로 바뀌면
+  app.run(host="0.0.0.0", debug=True)  # 서버를 구동시켜라!!
