@@ -30,18 +30,6 @@ try:
 
     GPIO.output(steps[0], 0)
     GPIO.output(steps[1], 1)
-    GPIO.output(steps[2], 1)
-    GPIO.output(steps[3], 0)
-    time.sleep(0.01)
-
-    GPIO.output(steps[0], 0)
-    GPIO.output(steps[1], 1)
-    GPIO.output(steps[2], 0)
-    GPIO.output(steps[3], 0)
-    time.sleep(0.01)
-
-    GPIO.output(steps[0], 1)
-    GPIO.output(steps[1], 1)
     GPIO.output(steps[2], 0)
     GPIO.output(steps[3], 0)
     time.sleep(0.01)
