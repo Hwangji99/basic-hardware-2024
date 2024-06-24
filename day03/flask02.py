@@ -15,5 +15,5 @@ def name():
 def age():
   return "<h1> 30 year's old</h1>"
 
-if __name__ == "__name__":
+if __name__ == "__main__":
   app.run(host="0.0.0.0", port="10012", debug=True)
