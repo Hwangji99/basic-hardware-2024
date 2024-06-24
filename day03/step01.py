@@ -10,25 +10,25 @@ for stepPin in steps:
 
 try:
   while 1:
-    GPIO.output(stepPin[0], 0)
-    GPIO.output(stepPin[1], 0)
-    GPIO.output(stepPin[2], 0)
-    GPIO.output(stepPin[3], 1)
+    GPIO.output(steps[0], 0)
+    GPIO.output(steps[1], 0)
+    GPIO.output(steps[2], 0)
+    GPIO.output(steps[3], 1)
 
-    GPIO.output(stepPin[0], 0)
-    GPIO.output(stepPin[1], 0)
-    GPIO.output(stepPin[2], 1)
-    GPIO.output(stepPin[3], 0)
+    GPIO.output(steps[0], 0)
+    GPIO.output(steps[1], 0)
+    GPIO.output(steps[2], 1)
+    GPIO.output(steps[3], 0)
 
-    GPIO.output(stepPin[0], 0)
-    GPIO.output(stepPin[1], 1)
-    GPIO.output(stepPin[2], 0)
-    GPIO.output(stepPin[3], 0)
+    GPIO.output(steps[0], 0)
+    GPIO.output(steps[1], 1)
+    GPIO.output(steps[2], 0)
+    GPIO.output(steps[3], 0)
 
-    GPIO.output(stepPin[0], 1)
-    GPIO.output(stepPin[1], 0)
-    GPIO.output(stepPin[2], 0)
-    GPIO.output(stepPin[3], 0)
+    GPIO.output(steps[0], 1)
+    GPIO.output(steps[1], 0)
+    GPIO.output(steps[2], 0)
+    GPIO.output(steps[3], 0)
 
 
 
