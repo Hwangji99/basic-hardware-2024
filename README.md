@@ -46,3 +46,4 @@ IoT 개발자 과정  라즈베리파이 리포지토리
 
         <img src="https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/풀다운 저항.png" width="600">
 
+## 2일차(2024-06-21)
