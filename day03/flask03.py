@@ -22,6 +22,3 @@ if __name__ == "__main__":
   GPIO.output(led, False)
 else:
   GPIO.output(led, True)
-
-except KeyboardInterrupt:  # Ctrl + c
-  GPIO.cleanup()
