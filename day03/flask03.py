@@ -8,19 +8,20 @@ led = 19
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(led, GPIO.OUT)
-try:
-  while True:
-    @app.route("/led/on")
-    def hello():
-      return "LED ON"
+
+@app.route("/led/on")
+def hello():
+  return "LED ON"
     
-    @app.route("/led/off")
-    def hello():
-      return "LED OFF"
+@app.route("/led/off")
+def hello():
+  return "LED OFF"
     
-    if __name__ == "__main__":
-      app.run(host="0.0.0.0", port="10012", debug=True)
-      GPIO.output(led, False)
+if __name__ == "__main__":
+  app.run(host="0.0.0.0", port="10012", debug=True)
+  GPIO.output(led, False)
+else:
+  GPIO.output(led, True)
 
 except KeyboardInterrupt:  # Ctrl + c
   GPIO.cleanup()
