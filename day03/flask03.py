@@ -1,24 +1,28 @@
-# URL 접속을 /led/on, /let/off로 접속하면 led를 on, off하는 웹페이지를 만들기
-import RPi.GPIO as GPIO
-import time
-
+# URL접속을 /led/on,  /let/off로 접속하면 led를 on, off 하는 웹 페이지 만들기
 from flask import Flask
+import RPi.GPIO as GPIO
 
-led = 19
+led_pin = 21
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(led, GPIO.OUT)
+GPIO.setup(led_pin, GPIO.OUT)
 
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+  return "LED Control!"
+  
 @app.route("/led/on")
-def hello():
-  return "LED ON"
-    
+def led_on():
+  GPIO.output(led_pin, False)
+  return "<h1>LED is now ON</h1>"
+  
 @app.route("/led/off")
-def hello():
-  return "LED OFF"
-    
-if __name__ == "__main__":
-  app.run(host="0.0.0.0", port="10012", debug=True)
-  GPIO.output(led, False)
-else:
-  GPIO.output(led, True)
+def led_off():
+  GPIO.output(led_pin, True)
+  return "<h1>LED is now OFF</h1>"
+  
+if __name__ == '__main__':
+  app.run(host='0.0.0.0', port="10011", debug=True)
+
