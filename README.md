@@ -47,3 +47,23 @@ IoT 개발자 과정  라즈베리파이 리포지토리
         <img src="https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/풀다운 저항.png" width="600">
 
 ## 2일차(2024-06-21)
+- 라즈베리 파이 파이썬
+    - 가상환경
+        - python -V : 파이썬 버전 확인
+        - python -m venv env(가상환경명) : 가상환경 env 생성
+        - source ./env/bin/activate : 가상환경 실행
+        - pip install '라이브러리 명'
+        - deactivate : 가상환경 실행 중지(빠져나오기)
+
+    - Wiring
+        - 라즈베리파이에서 GPIO에 접근하는 방법
+        - https://github.com/Wiring/Wiring
+        - Wiring 폴더 안에서 ./bulid 실행
+        - gpio readall : 라즈베리파이의 gpio에 대한 핀 정보가 출력
+## 3일차(2024-06-24)
+- 릴레이 모듈
+    - NC(Normally Close) : 평상시에 닫혀있다는 뜻으로, 릴레이에 전류가 흐르면 Open 되므로 평상시에 전원을 on 상태로 유지하다가 신호를 주어 off 할 때 사용
+    - NO(Normally Open) : 평상시에 열려있다는 뜻으로, 릴레이에 전류가 흐르면 Close 되므로 평상시에 전원을 off 상태로 유지하다가 신호를 주어 on 할 때 사용
+    - COM(Common) : 공통 단자로 전력 또는 외부기기의 한쪽 선을 항상 연결해야 하는 단자
+
+- 스텝 모터
