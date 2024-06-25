@@ -13,7 +13,7 @@ def home():
 
 @app.route('/data', methods = ['POST'])
 def data():
-  data = request.from['led']
+  data = request.form['led']
 
   if(data == 'on'):
     led.on()
