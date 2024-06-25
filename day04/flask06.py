@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 from flask import Flask, request, render_template
 # from gpiozero import LED
 
-led = LED(21)
+led = 21
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(led, GPIO.OUT)
