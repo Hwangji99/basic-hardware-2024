@@ -69,62 +69,83 @@ IoT 개발자 과정  라즈베리파이 리포지토리
     - NO(Normally Open) : 평상시에 열려있다는 뜻으로, 릴레이에 전류가 흐르면 Close 되므로 평상시에 전원을 off 상태로 유지하다가 신호를 주어 on 할 때 사용
     - COM(Common) : 공통 단자로 전력 또는 외부기기의 한쪽 선을 항상 연결해야 하는 단자
     - 예시(LED모듈 스위치)
-        릴레이 모듈 S : GPIO 연결
-        릴레이 모듈 + : 5V 연결
-        릴레이 모듈 - : GND 연결
-        릴레이 모듈 COM : 5V 연결
-        릴레이 모듈 NO or NC : LED 모듈의 VCC와 연결
-        
-LED 모듈 RGB : GND 연결
+        - 릴레이 모듈 S : GPIO 연결
+        - 릴레이 모듈 + : 5V 연결
+        - 릴레이 모듈 - : GND 연결
+        - 릴레이 모듈 COM : 5V 연결
+        - 릴레이 모듈 NO or NC : LED 모듈의 VCC와 연결
+        - LED 모듈 RGB : GND 연결
 
-스텝 모터와 모터 드라이버
+- 스텝 모터와 모터 드라이버
 
-스텝 모터 : 한 바퀴의 회전을 많은 수의 스텝 들로 나눌 수 있는 앙페르의 오른손 법칙을 활용한 브러쉬리스 직류 전기 모터
+    - 스텝 모터 : 한 바퀴의 회전을 많은 수의 스텝 들로 나눌 수 있는 앙페르의 오른손 법칙을 활용한 브러쉬리스 직류 전기 모터
 
-앙페르의 오른손 법칙 :
+    - 앙페르의 오른손 법칙 :
 
-모터 드라이버 : 스텝 모터를 원활하게 제어하기 위한 장치
+    - 모터 드라이버 : 스텝 모터를 원활하게 제어하기 위한 장치
 
-모터를 라즈베리 파이에 직접 연결하지 말것(모터의 전원이 종료될 때 연기전력이 발생되기 때문)
+    - 모터를 라즈베리 파이에 직접 연결하지 말것(모터의 전원이 종료될 때 연기전력이 발생되기 때문)
 
-스텝 모터 작동 방식
+    - 스텝 모터 작동 방식
 
-1상 여자 방식 : 차례로 1개으 상에 전기 신호를 줌
-2상 여자 방식 : 동시에 2개의 상에 전기 신호를 줌
-1-2상 여자 방식 : 1상과 2상 방식을 반복
-예시
+        - 1상 여자 방식 : 차례로 1개으 상에 전기 신호를 줌
+        - 2상 여자 방식 : 동시에 2개의 상에 전기 신호를 줌
+        - 1-2상 여자 방식 : 1상과 2상 방식을 반복
 
-모터 드라이버 + : 5V 연결
-모터 드라이버 - : GND 연결
-모터 드라이버 IN1 ~ IN4 : 각각의 GPIO에 연결
+    - 예시
 
-Flask
+        - 모터 드라이버 + : 5V 연결
+        - 모터 드라이버 - : GND 연결
+        - 모터 드라이버 IN1 ~ IN4 : 각각의 GPIO에 연결
 
-웹 애플리케이션 개발을 위한 파이썬 프레임워크
-from flask import Flask # name 이름을 통한 flask 객체 생성
-app = Flask(__name__)
+- Flask
 
-@app.route("/") # 라우팅을 위한 뷰 함수
-def hello():    # 등록 사이트에 접속을 성공한다면 hello 함수 실행
-return "Hello World!"
+    - 웹 애플리케이션 개발을 위한 파이썬 프레임워크
+    ```C
+    from flask import Flask # name 이름을 통한 flask 객체 생성
+    app = Flask(__name__)
 
-if __name__ == "__main__":  # 터미널에서 직접 실행시키면 실행 파일이 main으로 바뀜
-    app.run(host="0.0.0.0", port="10111", debug=True)
-GET 방식 데이터 전달 방법
-# 주소전달 방법 : 주소/?이름=James&주소=Busan
+    @app.route("/") # 라우팅을 위한 뷰 함수
+    def hello():    # 등록 사이트에 접속을 성공한다면 hello 함수 실행
+    return "Hello World!"
 
-from flask import Flask, request
+    if __name__ == "__main__":  # 터미널에서 직접 실행시키면 실행 파일이 main으로 바뀜
+        app.run(host="0.0.0.0", port="10111", debug=True)
+    ```
+    
+    ```C
+    GET 방식 데이터 전달 방법
+    # 주소전달 방법 : 주소/?이름=James&주소=Busan
 
-app = Flask(__name__)
+    from flask import Flask, request
 
-@app.route("/")
-def get():
-    value1 = request.args.get("이름","user")
-    value2 = request.args.get("주소","부산")
-    return value1+ ":" + value2
+    app = Flask(__name__)
 
-if __name__ == "__main__":
-    app.run(host = "0.0.0.0", port="18080", debug = True)
+    @app.route("/")
+    def get():
+        value1 = request.args.get("이름","user")
+        value2 = request.args.get("주소","부산")
+        return value1+ ":" + value2
+
+    if __name__ == "__main__":
+        app.run(host = "0.0.0.0", port="18080", debug = True)
+    ```
 - 스텝 모터
 
 - IP주소 + 포트번호/?이름=황지환&주소=미국
+
+## 4일차(2024-06-25)
+- 카메라 모듈 
+
+- FND 모듈
+
+    - 4-digit 규격의 공통 음극(Common Cathod)방식
+        - a ~ dp : VCC(HIGH)
+        - COM1 ~ COM4 : GND(LOW)
+    - 4-digit 규격의 공통 양극(Common Anode)방식
+        - a ~ dp : GND(LOW)
+        - COM1 ~ COM4 : VCC(HIGH)
+
+    <img src="https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/ri001.png" width="600">
+
+## 5일차(2024-06-26)
