@@ -1,4 +1,4 @@
-# basic-rasberrypy-2024
+# basic-hardware-2024
 IoT 개발자 과정  오픈 하드웨어 리포지토리
 
 ## 1일차(2024-06-20)
