@@ -1,5 +1,5 @@
 # basic-rasberrypy-2024
-IoT 개발자 과정  라즈베리파이 리포지토리
+IoT 개발자 과정  오픈 하드웨어 리포지토리
 
 ## 1일차(2024-06-20)
 - 옴의 법칙
@@ -149,3 +149,9 @@ IoT 개발자 과정  라즈베리파이 리포지토리
     <img src="https://raw.githubusercontent.com/Hwangji99/basic-rasberrypi-2024/main/images/ri001.png" width="600">
 
 ## 5일차(2024-06-26)
+- FND 모듈
+
+    - 버튼을 클릭하면 FND에 표시되는 숫자가 올라가는 기능 구현
+    - 1초마다 FND에 표시되는 숫자가 올라가는 기능 구현
+
+## 6일차(2024-06-27)
