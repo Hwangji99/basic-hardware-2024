@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
+from PyQt5.QtCore import *
 import sys
 import RPi.GPIO as GPIO
 import time
+import threading
 
 def measure():
 	GPIO.output(trigPin, True)
@@ -51,10 +53,13 @@ GPIO.setup(echoPin, GPIO.IN)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setwarnings(False)
 
-Buzz = GPIO.PWM(piezoPin, 1.0)
+# PWM(Pulse Width Modulation)을 사용하여 부저를 제어하기 위한 객체 생성
+Buzz = GPIO.PWM(piezoPin, 1.0)	# piezoPin에 연결된 PWM 객체 생성, 주파수 1.0으로 초기화
 
+# 멜로디를 위한 음계 리스트
 scale = [ 262, 294, 330, 349, 392, 440, 494 ]
 
+# 피에조 부저를 사용한 멜로디를 정의한 리스트
 twinkle = [ 0, 0, 4, 4, 5, 5, 4,
 			   3, 3, 2, 2, 1, 1, 0,
 			   4, 4, 3, 3, 2, 2, 1,
@@ -72,10 +77,40 @@ for digit in digits:
 
 form_class = uic.loadUiType("./main.ui")[0]
 
+class WorkerThread(QThread):
+	buzzingChanged = pyqtSignal(bool)	# 부저 울림 상태가 변경될 때 발생할 시그널 정의
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.buzzing = False	# 부저 울림 상태 초기화
+
+    def run(self):
+        self.buzzing = True	# 부저 울림 시작 상태로 설정
+        Buzz.start(50)	# PWM을 50% 듀티 사이클로 시작하여 부저 울림 시작
+        for i in range(0, 42):	# twinkle 리스트의 각 음표에 대해 반복
+            if not self.buzzing:	# self.buzzing이 False이면 멜로디 재생 중지
+                break
+            Buzz.ChangeFrequency(scale[twinkle[i]])	# 현재 음표의 주파수 설정
+            if i in [6, 13, 20, 27, 34, 41]:	# 멜로디의 특정 위치에서는 긴 시간동안 쉼
+                time.sleep(1.0)
+            else:
+                time.sleep(0.5)	# 그 외의 경우는 짧은 시간동안 쉼
+        Buzz.stop()	# 부저 울림 종료
+        self.buzzingChanged.emit(False)	# 부저 울림 상태 변경 시그널 발생
+
+    def stopBuzzing(self):
+        self.buzzing = False	# 부저 울림 중지
+
+
+        finally:
+            self.running = False
+            self.buzzingChanged.emit(False)
+
 class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
+		
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
@@ -86,23 +121,33 @@ class WindowClass(QMainWindow, form_class):
 		self.btn_fnd.clicked.connect(self.fndFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
 		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
+		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
+		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 
 	def buzzonFunction(self):
-		try:
-			Buzz.start(50)
-			for i in range(0, 42):
-				Buzz.ChangeFrequency(scale[twinkle[i]])
-				if i in [ 6, 13, 20, 27, 34, 41]:
-					time.sleep(1.0)
-				else:
-					time.sleep(0.5)
-			Buzz.stop()
+		if not self.worker_thread.isRunning():	# WorkerThread가 실행 중이지 않으면
+			self.worker_thread.start()	# WorkerThread를 시작하여 멜로디를 재생합니다
+		#self.buzzing = True
+		#try:
+			#Buzz.start(50)
+			#for i in range(0, 42):
+				#Buzz.ChangeFrequency(scale[twinkle[i]])
+				#if i in [ 6, 13, 20, 27, 34, 41]:
+					#time.sleep(1.0)
+				#else:
+					#time.sleep(0.5)
+			#Buzz.stop()
 
-		except KeyboardInterrupt:
-			GPIO.cleanup()
+		#except KeyboardInterrupt:
+			#GPIO.cleanup()
 
 	def buzzoffFunction(self):
-		Buzz.stop()
+		self.worker_thread.stopBuzzing()	# WorkerThread의 멜로디 재생을 멈추도록 stopBuzzing 메서드 호출
+		#Buzz.stop()
+
+	def handleBuzzingChanged(self, buzzing):
+		if not buzzing:	# buzzing이 False일 때 (멜로디 재생이 멈춘 상태)
+			Buzz.stop()		# 부저를 멈추도록 함
 
 	def btnredFunction(self):
 		GPIO.output(leds[0], False)
@@ -155,7 +200,7 @@ class WindowClass(QMainWindow, form_class):
 			GPIO.cleanup()
 
 	def ultraoffFunction(self):
-		GPIO.cleanup()
+		self.running = False
 
 	def fndFunction(self):
 		def display_number(number):
