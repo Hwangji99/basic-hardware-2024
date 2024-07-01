@@ -5,6 +5,8 @@ import sys
 import RPi.GPIO as GPIO
 import time
 import threading
+import adafruit_dht
+import board
 
 def measure():
 	GPIO.output(trigPin, True)
@@ -20,15 +22,17 @@ def measure():
 	distance = (elapsed * 19000) / 2
 
 	return distance
+log_num = 0
+sensor_pin = 25
 
-leds = [26, 19, 13]
+leds = [26, 19]
 piezoPin = 6
 trigPin = 27
 echoPin = 17
 
-segments = (20, 21, 16, 12, 24, 25, 5)
+segments = (20, 21, 16, 12, 24, 13, 5)
 
-digits = (23, 18, 4, 22)
+digits = (23, 25, 4, 22)
 
 num = [
 	(1, 1, 1, 1, 1, 1, 0),
@@ -52,6 +56,8 @@ GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setwarnings(False)
+GPIO.setup(sensor_pin, GPIO.IN)
+
 
 # PWM(Pulse Width Modulation)을 사용하여 부저를 제어하기 위한 객체 생성
 Buzz = GPIO.PWM(piezoPin, 1.0)	# piezoPin에 연결된 PWM 객체 생성, 주파수 1.0으로 초기화
@@ -79,50 +85,70 @@ form_class = uic.loadUiType("./main.ui")[0]
 
 class WorkerThread(QThread):
 	buzzingChanged = pyqtSignal(bool)	# 부저 울림 상태가 변경될 때 발생할 시그널 정의
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.buzzing = False	# 부저 울림 상태 초기화
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.buzzing = False	# 부저 울림 상태 초기화
+	def run(self):
+		self.buzzing = True	# 부저 울림 시작 상태로 설정
+		Buzz.start(50)	# PWM을 50% 듀티 사이클로 시작하여 부저 울림 시작
+		try:
+			for i in range(0, 42):	# twinkle 리스트의 각 음표에 대해 반
+				if not self.buzzing:	# self.buzzing이 False이면 멜로디 재생 중지
+					break
+				Buzz.ChangeFrequency(scale[twinkle[i]])	# 현재 음표의 주파수 설정
+				if i in [6, 13, 20, 27, 34, 41]:	# 멜로디의 특정 위치에서는 긴 시간동안 쉼
+					time.sleep(1.0)
+				else:
+					time.sleep(0.5)	# 그 외의 경우는 짧은 시간동안 쉼
+		finally:
+			Buzz.stop()	# 부저 울림 종료
+			self.buzzingChanged.emit(False)	# 부저 울림 상태 변경 시그널 발생
 
-    def run(self):
-        self.buzzing = True	# 부저 울림 시작 상태로 설정
-        Buzz.start(50)	# PWM을 50% 듀티 사이클로 시작하여 부저 울림 시작
-        for i in range(0, 42):	# twinkle 리스트의 각 음표에 대해 반복
-            if not self.buzzing:	# self.buzzing이 False이면 멜로디 재생 중지
-                break
-            Buzz.ChangeFrequency(scale[twinkle[i]])	# 현재 음표의 주파수 설정
-            if i in [6, 13, 20, 27, 34, 41]:	# 멜로디의 특정 위치에서는 긴 시간동안 쉼
-                time.sleep(1.0)
-            else:
-                time.sleep(0.5)	# 그 외의 경우는 짧은 시간동안 쉼
-        Buzz.stop()	# 부저 울림 종료
-        self.buzzingChanged.emit(False)	# 부저 울림 상태 변경 시그널 발생
+	def stopBuzzing(self):
+		self.buzzing = False	# 부저 울림 중지
 
-    def stopBuzzing(self):
-        self.buzzing = False	# 부저 울림 중지
-
-
-        finally:
-            self.running = False
-            self.buzzingChanged.emit(False)
+	
 
 class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
-		
+		self.dhtDevice = adafruit_dht.DHT11(board.D18)
+		self.temp = None
+		self.humid = None
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
-		self.btngreen.clicked.connect(self.btngreenFunction)
 		self.led_off.clicked.connect(self.ledoffFunction)
 		self.btn_ultraon.clicked.connect(self.ultraonFunction)
-		self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
-		self.btn_fnd.clicked.connect(self.fndFunction)
+		#self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
+		self.btn_fndon.clicked.connect(self.fndonFunction)
+		#self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
 		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
+		self.btn_temhu.clicked.connect(self.temhuFunc)
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
+		
+
+	def temhuFunc(self):
+		try:
+			temp = self.dhtDevice.temperature
+			humid = self.dhtDevice.humidity
+			self.temp = temp
+			self.humid = humid
+			if humid is not None and temp is not None:
+				self.lcd_temp.display(temp)
+				self.lcd_humid.display(humid)
+				print(f'Temperature: {temp:.1f}C / Humidity : {humid:.1f}%')
+			else:
+				self.lcd_temp.display('Err')
+				self.lcd_humid.display('Err')
+			time.sleep(2)
+
+		except RuntimeError as ex:
+			print(ex.args[0])
 
 	def buzzonFunction(self):
 		if not self.worker_thread.isRunning():	# WorkerThread가 실행 중이지 않으면
@@ -143,7 +169,7 @@ class WindowClass(QMainWindow, form_class):
 
 	def buzzoffFunction(self):
 		self.worker_thread.stopBuzzing()	# WorkerThread의 멜로디 재생을 멈추도록 stopBuzzing 메서드 호출
-		#Buzz.stop()
+		Buzz.stop()
 
 	def handleBuzzingChanged(self, buzzing):
 		if not buzzing:	# buzzing이 False일 때 (멜로디 재생이 멈춘 상태)
@@ -158,11 +184,6 @@ class WindowClass(QMainWindow, form_class):
 		GPIO.output(leds[0], True)
 		GPIO.output(leds[1], False)
 		GPIO.output(leds[2], True)
-
-	def btngreenFunction(self):
-		GPIO.output(leds[0], True)
-		GPIO.output(leds[1], True)
-		GPIO.output(leds[2], False)
 
 	def ledoffFunction(self):
 		GPIO.output(leds[0], True)
@@ -199,10 +220,14 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
-	def ultraoffFunction(self):
-		self.running = False
+	#def ultraoffFunction(self):
+		#if self.worker_thread.isRunning():
+			#self.worker_thread.stopBuzzing()
+		#Buzz.stop()
 
-	def fndFunction(self):
+		#GPIO. cleanup()
+
+	def fndonFunction(self):
 		def display_number(number):
 			for i in range(4):
 				digit_value = number % 10
@@ -224,8 +249,8 @@ class WindowClass(QMainWindow, form_class):
 		except KeyboardInterrupt:
 			GPIO.cleanup()
 
-	
-			
+	#def fndoffFunction(self):
+
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
 	myWindow = WindowClass()
