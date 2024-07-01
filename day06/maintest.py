@@ -120,7 +120,7 @@ class WindowClass(QMainWindow, form_class):
 		
 		self.update_timer = QtCore.QTimer(self)
 		#self.update_timer.timeout.connect(self.update_sensor_values)
-		#self.update_timer.start(2000)
+		self.update_timer.start(2000)
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
@@ -173,12 +173,12 @@ class WindowClass(QMainWindow, form_class):
 	def btnredFunction(self):
 		GPIO.output(leds[0], False)
 		GPIO.output(leds[1], True)
-		GPIO.output(leds[2], True)
+		G#PIO.output(leds[2], True)
 
 	def btnblueFunction(self):
 		GPIO.output(leds[0], True)
 		GPIO.output(leds[1], False)
-		GPIO.output(leds[2], True)
+		#GPIO.output(leds[2], True)
 
 	#def btngreenFunction(self):
 		#GPIO.output(leds[0], True)
@@ -188,7 +188,7 @@ class WindowClass(QMainWindow, form_class):
 	def ledoffFunction(self):
 		GPIO.output(leds[0], True)
 		GPIO.output(leds[1], True)
-		GPIO.output(leds[2], True)
+		#GPIO.output(leds[2], True)
 
 	def ultraonFunction(self):
 		try:
