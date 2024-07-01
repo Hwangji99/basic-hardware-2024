@@ -136,9 +136,10 @@ class WindowClass(QMainWindow, form_class):
 
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
+		
+		self.dhtDevice = adafruit_dht.DHT11(board.D18)
 
 	def update_sensor_values(self):
-		dhtDevice = adafruit_dht.DHT11(board.D18)
 		try:
 			temp = dhtDevice.temperature
 			humid = dhtDevice.humidity
