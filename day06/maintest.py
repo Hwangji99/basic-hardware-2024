@@ -115,8 +115,6 @@ class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
-		dhtDevice = adafruit_dht.DHT11(board.D18)
-
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
@@ -127,13 +125,21 @@ class WindowClass(QMainWindow, form_class):
 		self.btn_fndon.clicked.connect(self.fndonFunction)
 		#self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
-		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
-		self.btn_temhu.clicked.connect(self.temhuFunc)
+		#self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
+		self.btn_temhuon.clicked.connect(self.temhuFunc)
+		self.btn_temhuoff.clicked.connect(self.temhuFunc)
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 
-	def temhuFunc(self)
-		self.lcdtemp = display
+	def temhuFunc(self):
+		dhtDevice = adafruit_dht.DHT11(board.D18)
+		try:
+			temperature_c = dhtDevice.temperature
+			humidity = dhtDevice.humidity
+			self.lcdtemp.display(temperature_c)  # lcdtemp는 Qt Designer에서 설정한 LCD 객체 이름
+			self.lcdhum.display(humidity)  # lcdhum은 Qt Designer에서 설정한 LCD 객체 이름
+		except RuntimeError as error:
+			print(error.args[0])
 		
 	def buzzonFunction(self):
 		if not self.worker_thread.isRunning():	# WorkerThread가 실행 중이지 않으면
