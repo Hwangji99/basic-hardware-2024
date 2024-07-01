@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>594</width>
-    <height>630</height>
+    <width>419</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>20</y>
+      <y>10</y>
       <width>561</width>
-      <height>531</height>
+      <height>361</height>
      </rect>
     </property>
     <property name="title">
@@ -55,7 +55,7 @@
     <widget class="QPushButton" name="led_off">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>290</x>
        <y>60</y>
        <width>81</width>
        <height>21</height>
@@ -69,7 +69,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>190</y>
+       <y>130</y>
        <width>99</width>
        <height>30</height>
       </rect>
@@ -82,7 +82,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>260</y>
+       <y>210</y>
        <width>99</width>
        <height>30</height>
       </rect>
@@ -95,7 +95,7 @@
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>260</y>
+       <y>210</y>
        <width>99</width>
        <height>30</height>
       </rect>
@@ -104,56 +104,17 @@
       <string>멜로디 OFF</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_ultraoff">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>190</y>
-       <width>111</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>거리감지 OFF</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="btn_fndon">
      <property name="geometry">
       <rect>
-       <x>310</x>
-       <y>260</y>
+       <x>10</x>
+       <y>310</y>
        <width>99</width>
        <height>30</height>
       </rect>
      </property>
      <property name="text">
       <string>LCD ON</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_temhu">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>470</y>
-       <width>99</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>온습도 ON</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_temhu_2">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>470</y>
-       <width>99</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>온습도 ON</string>
      </property>
     </widget>
     <widget class="QLabel" name="label">
@@ -176,90 +137,11 @@
       <string>LED 버튼</string>
      </property>
     </widget>
-    <widget class="QLCDNumber" name="lcd_temp">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>370</y>
-       <width>191</width>
-       <height>71</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLCDNumber" name="lcd_humid">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>370</y>
-       <width>191</width>
-       <height>71</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>370</y>
-       <width>51</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>47</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>C</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>480</x>
-       <y>370</y>
-       <width>68</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>34</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>RH</string>
-     </property>
-    </widget>
-    <widget class="QLCDNumber" name="lcd_segment">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>140</y>
-       <width>241</width>
-       <height>81</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_fndoff">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>260</y>
-       <width>99</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>LCD OFF</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>230</y>
+       <y>170</y>
        <width>141</width>
        <height>22</height>
       </rect>
@@ -275,14 +157,57 @@
       <string>반짝반짝 작은별</string>
      </property>
     </widget>
-    <widget class="QLCDNumber" name="lcd_ultra">
+    <widget class="QPushButton" name="btngreen">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>60</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>GREEN ON</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>100</y>
-       <width>231</width>
-       <height>81</height>
+       <width>111</width>
+       <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>나눔고딕코딩</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>거리감지 버튼</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>270</y>
+       <width>91</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>나눔고딕코딩</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>LCD 버튼</string>
      </property>
     </widget>
    </widget>
@@ -292,7 +217,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>594</width>
+     <width>419</width>
      <height>28</height>
     </rect>
    </property>

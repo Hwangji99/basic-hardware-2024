@@ -23,9 +23,7 @@ def measure():
 
 	return distance
 
-sensor_pin = 18
-
-leds = [26, 19]
+leds = [26, 19, 18]
 piezoPin = 6
 trigPin = 27
 echoPin = 17
@@ -56,7 +54,7 @@ GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setwarnings(False)
-GPIO.setup(sensor_pin, GPIO.IN)
+
 
 
 # PWM(Pulse Width Modulation)을 사용하여 부저를 제어하기 위한 객체 생성
@@ -114,12 +112,11 @@ class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
-		self.dhtDevice = adafruit_dht.DHT11(board.D18)
-		self.temp = None
-		self.humid = None
+
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
+		self.btngreen.clicked.connect(self.btngreenFunction)
 		self.led_off.clicked.connect(self.ledoffFunction)
 		self.btn_ultraon.clicked.connect(self.ultraonFunction)
 		#self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
@@ -127,27 +124,9 @@ class WindowClass(QMainWindow, form_class):
 		#self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
 		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
-		self.btn_temhu.clicked.connect(self.temhuFunc)
+		#self.btn_temhu.clicked.connect(self.temhuFunc)
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
-
-	def temhuFunc(self):
-		try:
-			temp = self.dhtDevice.temperature
-			humid = self.dhtDevice.humidity
-			self.temp = temp
-			self.humid = humid
-			if humid is not None and temp is not None:
-				self.lcd_temp.display(temp)
-				self.lcd_humid.display(humid)
-				print(f'Temperature: {temp:.1f}C / Humidity : {humid:.1f}%')
-			else:
-				self.lcd_temp.display('Err')
-				self.lcd_humid.display('Err')
-			time.sleep(2)
-
-		except RuntimeError as ex:
-			print(ex.args[0])
 
 	def buzzonFunction(self):
 		if not self.worker_thread.isRunning():	# WorkerThread가 실행 중이지 않으면
@@ -183,6 +162,11 @@ class WindowClass(QMainWindow, form_class):
 		GPIO.output(leds[0], True)
 		GPIO.output(leds[1], False)
 		GPIO.output(leds[2], True)
+
+	def btngreenFunction(self):
+		GPIO.output(leds[0], True)
+		GPIO.output(leds[1], True)
+		GPIO.output(leds[2], False)
 
 	def ledoffFunction(self):
 		GPIO.output(leds[0], True)
@@ -239,6 +223,7 @@ class WindowClass(QMainWindow, form_class):
 
 		number = 0
 
+
 		try:
 			while True:
 				number = (number + 1) % 10000
@@ -248,11 +233,7 @@ class WindowClass(QMainWindow, form_class):
 		except KeyboardInterrupt:
 			GPIO.cleanup()
 
-	def fndoffFunction(self):
-		self.fnd_running = False
-		self.fnd_timer.stop()
-		self.clearFND()
-
+	
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
 	myWindow = WindowClass()
