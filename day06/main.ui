@@ -214,6 +214,19 @@
       <string>멜로디 ON</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="btn_buzzoff">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>470</y>
+       <width>99</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>멜로디 OFF</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QTimeEdit" name="timeEdit">
     <property name="geometry">

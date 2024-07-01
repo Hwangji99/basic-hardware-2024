@@ -54,9 +54,13 @@ GPIO.setwarnings(False)
 Buzz = GPIO.PWM(piezoPin, 1.0)
 
 scale = [ 262, 294, 330, 349, 392, 440, 494 ]
-twinkle = [ 1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 2, 2, 1, \
-				5, 5, 4, 4, 3, 3, 2, 5, 5, 4, 4, 3, 3, 2, \
-				1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 2, 2, 1 ]
+
+twinkle = [ 0, 0, 4, 4, 5, 5, 4,
+			   3, 3, 2, 2, 1, 1, 0,
+			   4, 4, 3, 3, 2, 2, 1,
+			   4, 4, 3, 3, 2, 2, 1,
+			   0, 0, 4, 4, 5, 5, 4,
+			   3, 3, 2, 2, 1, 1, 0 ]
 
 for segment in segments:
 	GPIO.setup(segment, GPIO.OUT)
@@ -81,13 +85,14 @@ class WindowClass(QMainWindow, form_class):
 		self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
 		self.btn_fnd.clicked.connect(self.fndFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
-		#self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
+		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
 
 	def buzzonFunction(self):
 		try:
+			Buzz.start(50)
 			for i in range(0, 42):
 				Buzz.ChangeFrequency(scale[twinkle[i]])
-				if i == 6 or i == 13 or i == 20 or i == 27 or i == 34 or i == 41:
+				if i in [ 6, 13, 20, 27, 34, 41]:
 					time.sleep(1.0)
 				else:
 					time.sleep(0.5)
@@ -96,7 +101,8 @@ class WindowClass(QMainWindow, form_class):
 		except KeyboardInterrupt:
 			GPIO.cleanup()
 
-	#def buzzoffFunction(self):
+	def buzzoffFunction(self):
+		Buzz.stop()
 
 	def btnredFunction(self):
 		GPIO.output(leds[0], False)
