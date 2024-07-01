@@ -22,8 +22,8 @@ def measure():
 	distance = (elapsed * 19000) / 2
 
 	return distance
-log_num = 0
-sensor_pin = 25
+
+sensor_pin = 18
 
 leds = [26, 19]
 piezoPin = 6
@@ -117,6 +117,7 @@ class WindowClass(QMainWindow, form_class):
 		self.dhtDevice = adafruit_dht.DHT11(board.D18)
 		self.temp = None
 		self.humid = None
+		self.fnd_running = False
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
@@ -228,28 +229,62 @@ class WindowClass(QMainWindow, form_class):
 		#GPIO. cleanup()
 
 	def fndonFunction(self):
-		def display_number(number):
-			for i in range(4):
-				digit_value = number % 10
-				number //= 10
-				for j in range(7):
-					GPIO.output(segments[j], num[digit_value][j])
-				GPIO.output(digits[3 - i], GPIO.LOW)
-				time.sleep(0.001)
-				GPIO.output(digits[3 - i], GPIO.HIGH)
+		if not self.fnd_running:
+			self.fnd_running = True
+			self.fnd_timer.start(1)
+		#def display_number(number):
+			#for i in range(4):
+				#digit_value = number % 10
+				#number //= 10
+				#for j in range(7):
+					#GPIO.output(segments[j], num[digit_value][j])
+				#GPIO.output(digits[3 - i], GPIO.LOW)
+				#time.sleep(0.001)
+				#GPIO.output(digits[3 - i], GPIO.HIGH)
 
-		number = 0
+		#number = 0
 
-		try:
-			while True:
-				number = (number + 1) % 10000
-				for _ in range(50):
-					display_number(number)
+		#try:
+			#while True:
+				#number = (number + 1) % 10000
+				#for _ in range(50):
+					#display_number(number)
 
-		except KeyboardInterrupt:
-			GPIO.cleanup()
+		#except KeyboardInterrupt:
+			#GPIO.cleanup()
 
-	#def fndoffFunction(self):
+	def fndoffFunction(self):
+		self.fnd_running = False
+		self.fnd_timer.stop()
+		self.clearFND()
+
+	def updateFND(self):
+		if self.fnd_running:
+			if self.count_fnd <= 9999:
+				self.displayFND(self.count_fnd)
+				self.displayLCD(self.count_fnd)
+				self.count_fnd += 1
+			else:
+				self.stopFND()
+
+	def displayFND(self, num):
+		d1000 = num // 1000
+		d100 = (num % 1000) // 100
+		d10 = (num % 100) // 10
+		d1 = num % 10
+
+		for i, d in enumerate([d1, d10, d100, d1000]):
+			fndOut(int(d), i)
+			time.sleep(0.001)
+
+	def clearFND(self):
+		for sel in fndSels:
+			GPIO.output(sel, GPIO.HIGH)
+		for seg in fndSegs:
+			GPIO.output(seg, GPIO.LOW)
+
+	def displayLCD(self, num):
+		self.lcdNumber.display(num)
 
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
