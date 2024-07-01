@@ -23,10 +23,14 @@ def measure():
 
 	return distance
 
-leds = [26, 19, 18]
+log_num = 0
+
+leds = [26, 19]
 piezoPin = 6
 trigPin = 27
 echoPin = 17
+
+sensor_pin = 18
 
 segments = (20, 21, 16, 12, 24, 13, 5)
 
@@ -54,6 +58,7 @@ GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setwarnings(False)
+GPIO.setup(sensor_pin, GPIO.IN)
 
 
 
@@ -106,17 +111,16 @@ class WorkerThread(QThread):
 	def stopBuzzing(self):
 		self.buzzing = False	# 부저 울림 중지
 
-	
-
 class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
+		dhtDevice = adafruit_dht.DHT11(board.D18)
 
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
-		self.btngreen.clicked.connect(self.btngreenFunction)
+		#self.btngreen.clicked.connect(self.btngreenFunction)
 		self.led_off.clicked.connect(self.ledoffFunction)
 		self.btn_ultraon.clicked.connect(self.ultraonFunction)
 		#self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
@@ -124,26 +128,16 @@ class WindowClass(QMainWindow, form_class):
 		#self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
 		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
-		#self.btn_temhu.clicked.connect(self.temhuFunc)
+		self.btn_temhu.clicked.connect(self.temhuFunc)
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 
+	def temhuFunc(self)
+		self.lcdtemp = display
+		
 	def buzzonFunction(self):
 		if not self.worker_thread.isRunning():	# WorkerThread가 실행 중이지 않으면
 			self.worker_thread.start()	# WorkerThread를 시작하여 멜로디를 재생합니다
-		#self.buzzing = True
-		#try:
-			#Buzz.start(50)
-			#for i in range(0, 42):
-				#Buzz.ChangeFrequency(scale[twinkle[i]])
-				#if i in [ 6, 13, 20, 27, 34, 41]:
-					#time.sleep(1.0)
-				#else:
-					#time.sleep(0.5)
-			#Buzz.stop()
-
-		#except KeyboardInterrupt:
-			#GPIO.cleanup()
 
 	def buzzoffFunction(self):
 		self.worker_thread.stopBuzzing()	# WorkerThread의 멜로디 재생을 멈추도록 stopBuzzing 메서드 호출
@@ -163,10 +157,10 @@ class WindowClass(QMainWindow, form_class):
 		GPIO.output(leds[1], False)
 		GPIO.output(leds[2], True)
 
-	def btngreenFunction(self):
-		GPIO.output(leds[0], True)
-		GPIO.output(leds[1], True)
-		GPIO.output(leds[2], False)
+	#def btngreenFunction(self):
+		#GPIO.output(leds[0], True)
+		#GPIO.output(leds[1], True)
+		#GPIO.output(leds[2], False)
 
 	def ledoffFunction(self):
 		GPIO.output(leds[0], True)
@@ -183,12 +177,7 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
-	#def ultraoffFunction(self):
-		#if self.worker_thread.isRunning():
-			#self.worker_thread.stopBuzzing()
-		#Buzz.stop()
-
-		#GPIO. cleanup()
+	
 
 	def fndonFunction(self):
 		def display_number(number):
