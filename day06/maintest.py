@@ -118,10 +118,6 @@ class WindowClass(QMainWindow, form_class):
 		super().__init__()
 		self.setupUi(self)
 
-		self.update_timer = QtCore.QTimer(self)
-		self.update_timer.timeout.connect(self.update_sensor_values)
-		self.update_timer.start(2000)
-		
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
 		#self.btngreen.clicked.connect(self.btngreenFunction)
@@ -140,6 +136,9 @@ class WindowClass(QMainWindow, form_class):
 
 	def temhuonFunc(self):
 		dhtDevice = adafruit_dht.DHT11(board.D18)
+		self.update_timer = QtCore.QTimer(self)
+		self.update_timer.timeout.connect(self.update_sensor_values)
+		self.update_timer.start(2000)
 		try:
 			temp = dhtDevice.temperature
 			humid = dhtDevice.humidity
