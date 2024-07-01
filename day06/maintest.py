@@ -117,7 +117,9 @@ class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
-
+		self.update_timer = QtCore.QTimer(self)
+		self.update_timer.timeout.connect(self.update_sensor_values)
+		self.update_timer.start(2000)
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
 		#self.btngreen.clicked.connect(self.btngreenFunction)
