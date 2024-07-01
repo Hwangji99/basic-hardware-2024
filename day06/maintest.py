@@ -152,6 +152,8 @@ class WindowClass(QMainWindow, form_class):
 				self.lcdhum.display(0)
 		except RuntimeError as error:
 			print(error.args[0])
+		except KeyboardInterrupt:
+			GPIO.cleanup()
 
 	def temhuoffFunc(self, event):
 		self.update_timer.stop()
