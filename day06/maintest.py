@@ -111,6 +111,8 @@ class WorkerThread(QThread):
 	def stopBuzzing(self):
 		self.buzzing = False	# 부저 울림 중지
 
+
+
 class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
@@ -126,21 +128,31 @@ class WindowClass(QMainWindow, form_class):
 		#self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
 		#self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
-		self.btn_temhuon.clicked.connect(self.temhuFunc)
-		self.btn_temhuoff.clicked.connect(self.temhuFunc)
+		self.btn_temhuon.clicked.connect(self.temhuonFunc)
+		self.btn_temhuoff.clicked.connect(self.temhuoffFunc)
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 
-	def temhuFunc(self):
+	def temhuonFunc(self):
 		dhtDevice = adafruit_dht.DHT11(board.D18)
 		try:
-			temperature_c = dhtDevice.temperature
-			humidity = dhtDevice.humidity
-			self.lcdtemp.display(temperature_c)  # lcdtemp는 Qt Designer에서 설정한 LCD 객체 이름
-			self.lcdhum.display(humidity)  # lcdhum은 Qt Designer에서 설정한 LCD 객체 이름
+			temp = dhtDevice.temperature
+			humid = dhtDevice.humidity
+			if temp is not None and humid is not None:
+				self.lcdtemp.display(temp)  # lcdtemp는 Qt Designer에서 설정한 LCD 객체 이름
+				self.lcdhum.display(humid)  # lcdhum은 Qt Designer에서 설정한 LCD 객체 이름
+				print(f'{log_num} - Temp : {temp}C / Humid : {humid}%')
+			else:
+				self.lcdtemp.display(0)
+				self.lcdhum.display(0)
 		except RuntimeError as error:
 			print(error.args[0])
-		
+
+	def temhuoffFunc(self, event):
+		self.update_timer.stop()
+		self.dhtDevice.exit()
+		event.accept()
+
 	def buzzonFunction(self):
 		if not self.worker_thread.isRunning():	# WorkerThread가 실행 중이지 않으면
 			self.worker_thread.start()	# WorkerThread를 시작하여 멜로디를 재생합니다
