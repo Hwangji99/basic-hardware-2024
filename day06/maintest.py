@@ -178,26 +178,6 @@ class WindowClass(QMainWindow, form_class):
 			while True:
 				distance = measure()
 				print("Distance: %2f cm" %distance)
-				if distance < 50 and distance >= 30:
-					Buzz.start(50)
-					Buzz.ChangeFrequency(220)
-					time.sleep(0.3)
-					Buzz.ChangeFrequency(360)
-					time.sleep(0.3)
-				elif distance < 30 and distance >= 10:
-					Buzz.start(50)
-					Buzz.ChangeFrequency(380)
-					time.sleep(0.3)
-					Buzz.ChangeFrequency(440)
-					time.sleep(0.3)
-				elif distance < 10:
-					Buzz.start(50)
-					Buzz.ChangeFrequency(460)
-					time.sleep(0.3)
-					Buzz.ChangeFrequency(530)
-					time.sleep(0.3)
-				else:
-					Buzz.stop()
 				time.sleep(1)
 
 		except  KeyboardInterrupt:
