@@ -173,7 +173,7 @@ class WindowClass(QMainWindow, form_class):
 	def btnredFunction(self):
 		GPIO.output(leds[0], False)
 		GPIO.output(leds[1], True)
-		G#PIO.output(leds[2], True)
+		#GPIO.output(leds[2], True)
 
 	def btnblueFunction(self):
 		GPIO.output(leds[0], True)
