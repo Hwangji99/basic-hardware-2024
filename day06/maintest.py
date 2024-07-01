@@ -131,7 +131,7 @@ class WindowClass(QMainWindow, form_class):
 		self.btn_fndon.clicked.connect(self.fndonFunction)
 		#self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
-		#self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
+		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
 		self.btn_temhuon.clicked.connect(self.temhuonFunc)
 		self.btn_temhuoff.clicked.connect(self.temhuoffFunc)
 
