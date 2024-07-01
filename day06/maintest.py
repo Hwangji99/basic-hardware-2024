@@ -117,13 +117,14 @@ class WindowClass(QMainWindow, form_class):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
+		
 		self.update_timer = QtCore.QTimer(self)
-		self.update_timer.timeout.connect(self.update_sensor_values)
-		self.update_timer.start(2000)
+		#self.update_timer.timeout.connect(self.update_sensor_values)
+		#self.update_timer.start(2000)
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
-		#self.btngreen.clicked.connect(self.btngreenFunction)
+		#self.btngreen.clicked.connect(self.btngreenFunction)_sensor_values)  # 시그널 연결 삭제
 		self.led_off.clicked.connect(self.ledoffFunction)
 		self.btn_ultraon.clicked.connect(self.ultraonFunction)
 		#self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
@@ -139,9 +140,6 @@ class WindowClass(QMainWindow, form_class):
 
 	def temhuonFunc(self):
 		dhtDevice = adafruit_dht.DHT11(board.D18)
-		self.update_timer = QtCore.QTimer(self)
-		self.update_timer.timeout.connect(self.update_sensor_values)
-		self.update_timer.start(2000)
 		try:
 			temp = dhtDevice.temperature
 			humid = dhtDevice.humidity
@@ -157,8 +155,8 @@ class WindowClass(QMainWindow, form_class):
 
 	def temhuoffFunc(self, event):
 		self.update_timer.stop()
-		self.dhtDevice.exit()
-		event.accept()
+		#self.dhtDevice.exit()
+		#event.accept()
 
 	def buzzonFunction(self):
 		if not self.worker_thread.isRunning():	# WorkerThread가 실행 중이지 않으면
