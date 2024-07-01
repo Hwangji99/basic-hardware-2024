@@ -139,6 +139,7 @@ class WindowClass(QMainWindow, form_class):
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 
 	def temhuonFunc(self):
+		GPIO.setup(sensor_pin, GPIO.IN)
 		dhtDevice = adafruit_dht.DHT11(board.D18)
 		try:
 			temp = dhtDevice.temperature
