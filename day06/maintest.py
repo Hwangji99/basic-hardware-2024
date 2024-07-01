@@ -58,7 +58,6 @@ GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setwarnings(False)
-GPIO.setup(sensor_pin, GPIO.IN)
 
 
 
@@ -139,7 +138,6 @@ class WindowClass(QMainWindow, form_class):
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 
 	def temhuonFunc(self):
-		GPIO.setup(sensor_pin, GPIO.IN)
 		dhtDevice = adafruit_dht.DHT11(board.D18)
 		try:
 			temp = dhtDevice.temperature
@@ -153,8 +151,6 @@ class WindowClass(QMainWindow, form_class):
 				self.lcdhum.display(0)
 		except RuntimeError as error:
 			print(error.args[0])
-		except KeyboardInterrupt:
-			GPIO.cleanup()
 
 	def temhuoffFunc(self, event):
 		self.update_timer.stop()
