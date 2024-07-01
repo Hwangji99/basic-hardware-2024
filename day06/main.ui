@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1024</width>
     <height>600</height>
    </rect>
   </property>
@@ -17,10 +17,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>30</y>
-      <width>671</width>
-      <height>421</height>
+      <x>20</x>
+      <y>10</y>
+      <width>991</width>
+      <height>531</height>
      </rect>
     </property>
     <property name="title">
@@ -29,8 +29,8 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>30</y>
+       <x>110</x>
+       <y>100</y>
        <width>68</width>
        <height>22</height>
       </rect>
@@ -42,8 +42,8 @@
     <widget class="QPushButton" name="btnred">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>30</y>
+       <x>0</x>
+       <y>490</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -55,8 +55,8 @@
     <widget class="QPushButton" name="btnblue">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>30</y>
+       <x>80</x>
+       <y>490</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -68,8 +68,8 @@
     <widget class="QPushButton" name="btngreen">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>30</y>
+       <x>160</x>
+       <y>490</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -81,8 +81,8 @@
     <widget class="QPushButton" name="led_off">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>30</y>
+       <x>240</x>
+       <y>490</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -94,8 +94,8 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>70</y>
+       <x>370</x>
+       <y>100</y>
        <width>68</width>
        <height>22</height>
       </rect>
@@ -104,11 +104,11 @@
       <string>거리감지</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_ultra">
+    <widget class="QPushButton" name="btn_ultraon">
      <property name="geometry">
       <rect>
-       <x>70</x>
-       <y>70</y>
+       <x>320</x>
+       <y>480</y>
        <width>99</width>
        <height>30</height>
       </rect>
@@ -120,8 +120,8 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>120</y>
+       <x>870</x>
+       <y>110</y>
        <width>41</width>
        <height>22</height>
       </rect>
@@ -133,8 +133,8 @@
     <widget class="QPushButton" name="btn_fnd">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>120</y>
+       <x>730</x>
+       <y>350</y>
        <width>91</width>
        <height>21</height>
       </rect>
@@ -143,6 +143,87 @@
       <string>LCD판 ON</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>150</y>
+       <width>211</width>
+       <height>291</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../../../../.designer/images/led.jpg</pixmap>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>720</x>
+       <y>190</y>
+       <width>271</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../../../../.designer/images/lcd.jpg</pixmap>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_ultraoff">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>480</y>
+       <width>111</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>거리감지 OFF</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_fnd_2">
+     <property name="geometry">
+      <rect>
+       <x>830</x>
+       <y>350</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>LCD판 OFF</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_buzzon">
+     <property name="geometry">
+      <rect>
+       <x>570</x>
+       <y>470</y>
+       <width>99</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>멜로디 ON</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QTimeEdit" name="timeEdit">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>10</y>
+      <width>118</width>
+      <height>41</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -150,7 +231,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1024</width>
      <height>28</height>
     </rect>
    </property>

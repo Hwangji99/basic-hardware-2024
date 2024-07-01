@@ -49,8 +49,14 @@ for led in leds:
 GPIO.setup(trigPin, GPIO.OUT)
 GPIO.setup(echoPin, GPIO.IN)
 GPIO.setup(piezoPin, GPIO.OUT)
+GPIO.setwarnings(False)
 
-Buzz = GPIO.PWM(piezoPin, 440)
+Buzz = GPIO.PWM(piezoPin, 1.0)
+
+scale = [ 262, 294, 330, 349, 392, 440, 494 ]
+twinkle = [ 1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 2, 2, 1, \
+				5, 5, 4, 4, 3, 3, 2, 5, 5, 4, 4, 3, 3, 2, \
+				1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 2, 2, 1 ]
 
 for segment in segments:
 	GPIO.setup(segment, GPIO.OUT)
@@ -71,8 +77,26 @@ class WindowClass(QMainWindow, form_class):
 		self.btnblue.clicked.connect(self.btnblueFunction)
 		self.btngreen.clicked.connect(self.btngreenFunction)
 		self.led_off.clicked.connect(self.ledoffFunction)
-		self.btn_ultra.clicked.connect(self.ultraFunction)
+		self.btn_ultraon.clicked.connect(self.ultraonFunction)
+		self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
 		self.btn_fnd.clicked.connect(self.fndFunction)
+		self.btn_buzzon.clicked.connect(self.buzzonFunction)
+		#self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
+
+	def buzzonFunction(self):
+		try:
+			for i in range(0, 42):
+				Buzz.ChangeFrequency(scale[twinkle[i]])
+				if i == 6 or i == 13 or i == 20 or i == 27 or i == 34 or i == 41:
+					time.sleep(1.0)
+				else:
+					time.sleep(0.5)
+			Buzz.stop()
+
+		except KeyboardInterrupt:
+			GPIO.cleanup()
+
+	#def buzzoffFunction(self):
 
 	def btnredFunction(self):
 		GPIO.output(leds[0], False)
@@ -94,7 +118,7 @@ class WindowClass(QMainWindow, form_class):
 		GPIO.output(leds[1], True)
 		GPIO.output(leds[2], True)
 
-	def ultraFunction(self):
+	def ultraonFunction(self):
 		try:
 			while True:
 				distance = measure()
@@ -124,6 +148,9 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
+	def ultraoffFunction(self):
+		GPIO.cleanup()
+
 	def fndFunction(self):
 		def display_number(number):
 			for i in range(4):
@@ -145,6 +172,8 @@ class WindowClass(QMainWindow, form_class):
 
 		except KeyboardInterrupt:
 			GPIO.cleanup()
+
+	
 			
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
