@@ -117,17 +117,18 @@ class WindowClass(QMainWindow, form_class):
 		super().__init__()
 		self.setupUi(self)
 		
-		self.current_number = 0
 		self.update_timer = QtCore.QTimer(self)
 		self.update_timer.timeout.connect(self.update_sensor_values)
 		#self.update_timer.start(2000)
+
+		self.ultra_running = False
 
 		self.btnred.clicked.connect(self.btnredFunction)
 		self.btnblue.clicked.connect(self.btnblueFunction)
 		#self.btngreen.clicked.connect(self.btngreenFunction)_sensor_values)  # 시그널 연결 삭제
 		self.led_off.clicked.connect(self.ledoffFunction)
 		self.btn_ultraon.clicked.connect(self.ultraonFunction)
-		#self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
+		self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
 		self.btn_fndon.clicked.connect(self.fndonFunction)
 		self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
@@ -207,55 +208,39 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
-	# def fndonFunction(self):
-	# 	def display_number(number):
-	# 		for i in range(4):
-	# 			digit_value = number % 10
-	# 			number //= 10
-	# 			for j in range(7):
-	# 				GPIO.output(segments[j], num[digit_value][j])
-	# 			GPIO.output(digits[3 - i], GPIO.LOW)
-	# 			time.sleep(0.001)
-	# 			GPIO.output(digits[3 - i], GPIO.HIGH)
-
-	# 	def update_display():
-	# 		nonlocal number
-	# 		while self.fnd_running:
-	# 			number = (number + 1) % 10000
-	# 			# 7세그먼트 디스플레이 업데이트
-	# 			for _ in range(50):
-	# 				display_number(number)
-
-	# 	number = 0
-	# 	self.fnd_running = True
-	# 	threading.Thread(target=update_display, daemon=True).start()
-
-	# 	if self.fnd_thread is None or not self.fnd_thread.is_alive():
-	# 		self.fnd_thread_running = True
-	# 		self.fnd_thread = threading.Thread(target=update_display, daemon=True)
-	# 		self.fnd_thread.start()
-
-	# def fndoffFunction(self):
-	# 	self.fnd_running = False
-
-	def update_display(self):
-		number_str = str(self.current_number).zfill(4)  # 숫자를 4자리 문자열로 변환하여 0으로 채움
-		for digit in range(4):
-			for segment in range(7):
-				GPIO.output(segments[segment], num[int(number_str[digit])][segment])
-			GPIO.output(digits[digit], GPIO.LOW)
-			time.sleep(0.001)
-			GPIO.output(digits[digit], GPIO.HIGH)
-
-		self.lcdfnd.display(self.current_number)
+	def ultraoffFunction(self):
+		self.ultra_running = False
 
 	def fndonFunction(self):
-		self.update_timer.start(10)  # 10ms마다 업데이트
-		self.current_number = 0
+		def display_number(number):
+			for i in range(4):
+				digit_value = number % 10
+				number //= 10
+				for j in range(7):
+					GPIO.output(segments[j], num[digit_value][j])
+				GPIO.output(digits[3 - i], GPIO.LOW)
+				time.sleep(0.001)
+				GPIO.output(digits[3 - i], GPIO.HIGH)
+
+		def update_display():
+			nonlocal number
+			while self.fnd_running:
+				number = (number + 1) % 10000
+				# 7세그먼트 디스플레이 업데이트
+				for _ in range(50):
+					display_number(number)
+
+		number = 0
+		self.fnd_running = True
+		threading.Thread(target=update_display, daemon=True).start()
+
+		if self.fnd_thread is None or not self.fnd_thread.is_alive():
+			self.fnd_thread_running = True
+			self.fnd_thread = threading.Thread(target=update_display, daemon=True)
+			self.fnd_thread.start()
 
 	def fndoffFunction(self):
-		self.update_timer.stop()
-		
+		self.fnd_running = False
 
 	def exitFunction(self):
 		self.update_timer.stop()  # 타이머 중지
