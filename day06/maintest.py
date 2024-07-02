@@ -223,7 +223,7 @@ class WindowClass(QMainWindow, form_class):
 		self.display_number_on_gpio(self.fnd_number)  # 숫자를 GPIO에 표시
 
 	def fndonFunction(self):
-		self.fnd_timer.start(10)  # 100ms마다 FND 업데이트
+		self.fnd_timer.start(500)  # 100ms마다 FND 업데이트
 		# def display_number(number):
 		# 	for i in range(4):
 		# 		digit_value = number % 10
