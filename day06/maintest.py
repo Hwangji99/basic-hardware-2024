@@ -208,19 +208,24 @@ class WindowClass(QMainWindow, form_class):
 
 	def display_number_on_gpio(self, number):
 		digits_state = [GPIO.HIGH] * 4  # 모든 자리수의 상태를 저장
+		digit_values = []
+		
 		for i in range(4):
-			digit_value = number % 10
+			digit_values.append(number % 10)
 			number //= 10
-			for j in range(7):
-				GPIO.output(segments[j], num[digit_value][j])
-				digits_state[3 - i] = GPIO.LOW  # 현재 자리수를 활성화
-				GPIO.output(digits[3 - i], digits_state[3 - i])
-        # 시간 대기를 제거하여 깜빡임을 줄임
-        # time.sleep(0.001)
-    # 전체 자리수를 활성화한 후 모두 비활성화 
-		time.sleep(0.001)  # 기존의 time.sleep(0.001) 추가
+
+		for j in range(7):
+			for i in range(4):
+				GPIO.output(segments[j], num[digit_values[i]][j])
+				time.sleep(0.001)  # 짧은 지연 시간
+				
 		for i in range(4):
-			digits_state[i] = GPIO.HIGH
+			digits_state[i] = GPIO.LOW  # 모든 자리수를 활성화
+			GPIO.output(digits[i], digits_state[i])
+		time.sleep(0.001)  # 전체 자리수를 활성화한 후 지연
+		
+		for i in range(4):
+			digits_state[i] = GPIO.HIGH  # 모든 자리수를 비활성화
 			GPIO.output(digits[i], digits_state[i])
 
 
