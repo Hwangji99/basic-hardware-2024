@@ -207,14 +207,17 @@ class WindowClass(QMainWindow, form_class):
 			GPIO.cleanup()
 
 	def display_number_on_gpio(self, number):
+		digits_state = [GPIO.HIGH] * 4  # 모든 자리수의 상태를 저장
 		for i in range(4):
 			digit_value = number % 10
 			number //= 10
-			for j in range(7):
-				GPIO.output(segments[j], num[digit_value][j])
-			GPIO.output(digits[3 - i], GPIO.LOW)
-			time.sleep(0.001)
-			GPIO.output(digits[3 - i], GPIO.HIGH)
+		for j in range(7):
+			GPIO.output(segments[j], num[digit_value][j])
+		digits_state[3 - i] = GPIO.LOW  # 현재 자리수를 활성화
+		GPIO.output(digits[3 - i], digits_state[3 - i])
+		time.sleep(0.001)  # 지연 시간 줄이기
+		digits_state[3 - i] = GPIO.HIGH  # 현재 자리수를 비활성화
+		GPIO.output(digits[3 - i], digits_state[3 - i])
 
 
 	def update_fnd(self):
@@ -223,7 +226,7 @@ class WindowClass(QMainWindow, form_class):
 		self.display_number_on_gpio(self.fnd_number)  # 숫자를 GPIO에 표시
 
 	def fndonFunction(self):
-		self.fnd_timer.start(500)  # 100ms마다 FND 업데이트
+		self.fnd_timer.start(100)  # 100ms마다 FND 업데이트
 		# def display_number(number):
 		# 	for i in range(4):
 		# 		digit_value = number % 10
