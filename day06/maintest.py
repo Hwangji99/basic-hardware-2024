@@ -117,6 +117,7 @@ class WindowClass(QMainWindow, form_class):
 		super().__init__()
 		self.setupUi(self)
 		
+		self.current_number = 0
 		self.update_timer = QtCore.QTimer(self)
 		self.update_timer.timeout.connect(self.update_sensor_values)
 		#self.update_timer.start(2000)
@@ -206,52 +207,55 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
-	def fndonFunction(self):
-		def display_number(number):
-			for i in range(4):
-				digit_value = number % 10
-				number //= 10
-				for j in range(7):
-					GPIO.output(segments[j], num[digit_value][j])
-				GPIO.output(digits[3 - i], GPIO.LOW)
-				time.sleep(0.001)
-				GPIO.output(digits[3 - i], GPIO.HIGH)
+	# def fndonFunction(self):
+	# 	def display_number(number):
+	# 		for i in range(4):
+	# 			digit_value = number % 10
+	# 			number //= 10
+	# 			for j in range(7):
+	# 				GPIO.output(segments[j], num[digit_value][j])
+	# 			GPIO.output(digits[3 - i], GPIO.LOW)
+	# 			time.sleep(0.001)
+	# 			GPIO.output(digits[3 - i], GPIO.HIGH)
 
-		def update_display():
-			number = 0
-			while getattr(self, 'fnd_thread_running', True):
-				number = (number + 1) % 10000
-				# 7세그먼트 디스플레이 업데이트
-				for _ in range(50):
-					display_number(number)
+	# 	def update_display():
+	# 		nonlocal number
+	# 		while self.fnd_running:
+	# 			number = (number + 1) % 10000
+	# 			# 7세그먼트 디스플레이 업데이트
+	# 			for _ in range(50):
+	# 				display_number(number)
 
-		# number = 0
-		# self.fnd_running = True
-		# threading.Thread(target=update_display, daemon=True).start()
+	# 	number = 0
+	# 	self.fnd_running = True
+	# 	threading.Thread(target=update_display, daemon=True).start()
 
-		if self.fnd_thread is None or not self.fnd_thread.is_alive():
-			self.fnd_thread_running = True
-			self.fnd_thread = threading.Thread(target=update_display, daemon=True)
-			self.fnd_thread.start()
+	# 	if self.fnd_thread is None or not self.fnd_thread.is_alive():
+	# 		self.fnd_thread_running = True
+	# 		self.fnd_thread = threading.Thread(target=update_display, daemon=True)
+	# 		self.fnd_thread.start()
 
-		# try:
-		# 	while True:
-		# 		number = (number + 1) % 10000
-		# 		for _ in range(50):
-		# 			display_number(number)
+	# def fndoffFunction(self):
+	# 	self.fnd_running = False
 
-		# except KeyboardInterrupt:
-		# 	GPIO.cleanup()
+	def update_display(self):
+		number_str = str(self.current_number).zfill(4)  # 숫자를 4자리 문자열로 변환하여 0으로 채움
+		for digit in range(4):
+			for segment in range(7):
+				GPIO.output(segments[segment], num[int(number_str[digit])][segment])
+			GPIO.output(digits[digit], GPIO.LOW)
+			time.sleep(0.001)
+			GPIO.output(digits[digit], GPIO.HIGH)
+
+		self.lcdfnd.display(self.current_number)
+
+	def fdonFunction(self):
+		self.update_timer.start(10)  # 10ms마다 업데이트
+		self.current_number = 0
 
 	def fndoffFunction(self):
-		#self.fnd_running = False
-		if self.fnd_thread is not None and self.fnd_thread.is_alive():
-			self.fnd_thread_running = False  # 스레드 종료를 위해 플래그 변경
-			self.fnd_thread.join()  # 스레드 종료 대기
-			for digit in digits:
-				GPIO.output(digit, GPIO.HIGH)
-			for segment in segments:
-				GPIO.output(segment, GPIO.LOW)
+		self.update_timer.stop()
+		
 
 	def exitFunction(self):
 		self.update_timer.stop()  # 타이머 중지
