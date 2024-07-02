@@ -59,7 +59,7 @@ GPIO.setup(echoPin, GPIO.IN)
 GPIO.setup(piezoPin, GPIO.OUT)
 GPIO.setwarnings(False)
 
-
+dhtDevice = adafruit_dht.DHT11(board.D18)
 
 # PWM(Pulse Width Modulation)을 사용하여 부저를 제어하기 위한 객체 생성
 Buzz = GPIO.PWM(piezoPin, 1.0)	# piezoPin에 연결된 PWM 객체 생성, 주파수 1.0으로 초기화
@@ -136,14 +136,10 @@ class WindowClass(QMainWindow, form_class):
 
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
-		
-		self.dhtDevice = adafruit_dht.DHT11(board.D18)
-
-		self.fnd_update_timer = QtCore.QTimer(self)
-		self.fnd_update_timer.timeout.connect(self.update_display)
-		self.current_number = 0
+	
 
 	def update_sensor_values(self):
+		global log_num
 		try:
 			temp = dhtDevice.temperature
 			humid = dhtDevice.humidity
@@ -151,6 +147,7 @@ class WindowClass(QMainWindow, form_class):
 				self.lcdtemp.display(temp)  # lcdtemp는 Qt Designer에서 설정한 LCD 객체 이름
 				self.lcdhum.display(humid)  # lcdhum은 Qt Designer에서 설정한 LCD 객체 이름
 				print(f'{log_num} - Temp : {temp}C / Humid : {humid}%')
+				log_num += 1
 			else:
 				self.lcdtemp.display(0)
 				self.lcdhum.display(0)
