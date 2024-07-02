@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>720</width>
-    <height>416</height>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>20</x>
       <y>10</y>
       <width>561</width>
-      <height>361</height>
+      <height>501</height>
      </rect>
     </property>
     <property name="title">
@@ -107,8 +107,8 @@
     <widget class="QPushButton" name="btn_fndon">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>310</y>
+       <x>30</x>
+       <y>440</y>
        <width>99</width>
        <height>30</height>
       </rect>
@@ -239,6 +239,16 @@
        <x>410</x>
        <y>180</y>
        <width>91</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="lcdfnd">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>370</y>
+       <width>131</width>
        <height>51</height>
       </rect>
      </property>
