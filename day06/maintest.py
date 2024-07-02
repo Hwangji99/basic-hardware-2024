@@ -206,9 +206,21 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
+	def display_number_on_gpio(self, number):
+		for i in range(4):
+			digit_value = number % 10
+			number //= 10
+			for j in range(7):
+				GPIO.output(segments[j], num[digit_value][j])
+			GPIO.output(digits[3 - i], GPIO.LOW)
+			time.sleep(0.001)
+			GPIO.output(digits[3 - i], GPIO.HIGH)
+
+
 	def update_fnd(self):
 		self.fnd_number = (self.fnd_number + 1) % 10000  # 숫자를 0에서 9999까지 증가
 		self.lcdfnd.display(self.fnd_number)  # 숫자를 QLCDNumber에 표시
+		self.display_number_on_gpio(self.fnd_number)  # 숫자를 GPIO에 표시
 
 	def fndonFunction(self):
 		self.fnd_timer.start(100)  # 100ms마다 FND 업데이트
