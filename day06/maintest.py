@@ -219,15 +219,19 @@ class WindowClass(QMainWindow, form_class):
 
 		def update_display():
 			nonlocal number
-			while self.fnd_thread is not None and:
+			while self.fnd_thread is not None and self.fnd_thread.is_alive:
 				number = (number + 1) % 10000
 				# 7세그먼트 디스플레이 업데이트
 				for _ in range(50):
 					display_number(number)
 
-		number = 0
-		self.fnd_running = True
-		threading.Thread(target=update_display, daemon=True).start()
+		# number = 0
+		# self.fnd_running = True
+		# threading.Thread(target=update_display, daemon=True).start()
+
+		if self.fnd_thread is None or not self.fnd_thread.is_alive():
+			self.fnd_thread = threading.Thread(target=update_display, daemon=True)
+			self.fnd_thread.start()
 
 		# try:
 		# 	while True:
