@@ -138,6 +138,9 @@ class WindowClass(QMainWindow, form_class):
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 		
 		self.dhtDevice = adafruit_dht.DHT11(board.D18)
+		self.fnd_timer = QtCore.QTimer(self)  # FND 업데이트를 위한 타이머 추가
+		self.fnd_timer.timeout.connect(self.update_fnd)  # 타이머가 timeout될 때 호출할 메서드 연결
+		self.fnd_number = 0  # FND에 표시할 숫자 초기화
 
 	def update_sensor_values(self):
 		try:
@@ -203,30 +206,33 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
-	
+	def update_fnd(self):
+		self.fnd_number = (self.fnd_number + 1) % 10000  # 숫자를 0에서 9999까지 증가
+		self.lcdfnd.display(self.fnd_number)  # 숫자를 QLCDNumber에 표시
 
 	def fndonFunction(self):
-		def display_number(number):
-			for i in range(4):
-				digit_value = number % 10
-				number //= 10
-				for j in range(7):
-					GPIO.output(segments[j], num[digit_value][j])
-				GPIO.output(digits[3 - i], GPIO.LOW)
-				time.sleep(0.001)
-				GPIO.output(digits[3 - i], GPIO.HIGH)
+		self.fnd_timer.start(100)  # 100ms마다 FND 업데이트
+		# def display_number(number):
+		# 	for i in range(4):
+		# 		digit_value = number % 10
+		# 		number //= 10
+		# 		for j in range(7):
+		# 			GPIO.output(segments[j], num[digit_value][j])
+		# 		GPIO.output(digits[3 - i], GPIO.LOW)
+		# 		time.sleep(0.001)
+		# 		GPIO.output(digits[3 - i], GPIO.HIGH)
 
-		number = 0
+		# number = 0
 
 
-		try:
-			while True:
-				number = (number + 1) % 10000
-				for _ in range(50):
-					display_number(number)
+		# try:
+		# 	while True:
+		# 		number = (number + 1) % 10000
+		# 		for _ in range(50):
+		# 			display_number(number)
 
-		except KeyboardInterrupt:
-			GPIO.cleanup()
+		# except KeyboardInterrupt:
+		# 	GPIO.cleanup()
 
 	
 if __name__ == "__main__":
