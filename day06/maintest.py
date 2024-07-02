@@ -219,7 +219,7 @@ class WindowClass(QMainWindow, form_class):
 
 		def update_display():
 			number = 0
-			while self.fnd_thread is not None and self.fnd_thread.is_alive:
+			while getattr(self, 'fnd_thread_running', True):
 				number = (number + 1) % 10000
 				# 7세그먼트 디스플레이 업데이트
 				for _ in range(50):
@@ -230,6 +230,7 @@ class WindowClass(QMainWindow, form_class):
 		# threading.Thread(target=update_display, daemon=True).start()
 
 		if self.fnd_thread is None or not self.fnd_thread.is_alive():
+			self.fnd_thread_running = True
 			self.fnd_thread = threading.Thread(target=update_display, daemon=True)
 			self.fnd_thread.start()
 
@@ -245,7 +246,8 @@ class WindowClass(QMainWindow, form_class):
 	def fndoffFunction(self):
 		#self.fnd_running = False
 		if self.fnd_thread is not None and self.fnd_thread.is_alive():
-			self.fnd_thread = None
+			self.fnd_thread_running = False  # 스레드 종료를 위해 플래그 변경
+			self.fnd_thread.join()  # 스레드 종료 대기
 			for digit in digits:
 				GPIO.output(digit, GPIO.HIGH)
 			for segment in segments:
