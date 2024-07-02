@@ -218,7 +218,7 @@ class WindowClass(QMainWindow, form_class):
 				GPIO.output(digits[3 - i], GPIO.HIGH)
 
 		def update_display():
-			nonlocal number
+			number = 0
 			while self.fnd_thread is not None and self.fnd_thread.is_alive:
 				number = (number + 1) % 10000
 				# 7세그먼트 디스플레이 업데이트
@@ -244,11 +244,12 @@ class WindowClass(QMainWindow, form_class):
 
 	def fndoffFunction(self):
 		#self.fnd_running = False
-		self.fnd_thread = None
-		for digit in digits:
-			GPIO.output(digit, GPIO.HIGH)
-		for segment in segments:
-			GPIO.output(segment, GPIO.LOW)
+		if self.fnd_thread is not None and self.fnd_thread.is_alive():
+			self.fnd_thread = None
+			for digit in digits:
+				GPIO.output(digit, GPIO.HIGH)
+			for segment in segments:
+				GPIO.output(segment, GPIO.LOW)
 
 	def exitFunction(self):
 		self.update_timer.stop()  # 타이머 중지
