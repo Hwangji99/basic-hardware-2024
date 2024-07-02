@@ -68,7 +68,7 @@
     <widget class="QPushButton" name="btn_ultraon">
      <property name="geometry">
       <rect>
-       <x>470</x>
+       <x>510</x>
        <y>230</y>
        <width>99</width>
        <height>30</height>
@@ -127,7 +127,7 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>90</x>
        <y>310</y>
        <width>91</width>
        <height>22</height>
@@ -274,20 +274,10 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLCDNumber" name="lcdfnd">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>350</y>
-       <width>131</width>
-       <height>51</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="btn_fndon">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>440</y>
        <width>99</width>
        <height>30</height>
@@ -399,17 +389,23 @@
       <string>LCD OFF</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_ultraoff">
+    <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>570</x>
-       <y>230</y>
-       <width>99</width>
-       <height>30</height>
+       <x>30</x>
+       <y>340</y>
+       <width>191</width>
+       <height>81</height>
       </rect>
      </property>
      <property name="text">
-      <string>거리감지 OFF</string>
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../images/908792.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
