@@ -137,7 +137,8 @@ class WindowClass(QMainWindow, form_class):
 
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
-	
+
+		self.fnd_thread = None  # 7세그먼트 표시 스레드를 저장할 변수 초기화
 
 	def update_sensor_values(self):
 		global log_num
@@ -218,7 +219,7 @@ class WindowClass(QMainWindow, form_class):
 
 		def update_display():
 			nonlocal number
-			while self.fnd_running:
+			while self.fnd_thread is not None and:
 				number = (number + 1) % 10000
 				# 7세그먼트 디스플레이 업데이트
 				for _ in range(50):
