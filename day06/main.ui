@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>10</y>
+      <y>-10</y>
       <width>691</width>
-      <height>501</height>
+      <height>521</height>
      </rect>
     </property>
     <property name="title">
@@ -127,8 +127,8 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>500</y>
+       <x>60</x>
+       <y>310</y>
        <width>91</width>
        <height>22</height>
       </rect>
@@ -346,26 +346,46 @@
       <string>온습도 OFF</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QPushButton" name="btnexit">
-    <property name="geometry">
-     <rect>
-      <x>610</x>
-      <y>0</y>
-      <width>99</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>17</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>EXIT</string>
-    </property>
+    <widget class="QPushButton" name="btnexit">
+     <property name="geometry">
+      <rect>
+       <x>590</x>
+       <y>480</y>
+       <width>99</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>17</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>EXIT</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>300</y>
+       <width>101</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>나눔고딕코딩</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>온습도 버튼</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
