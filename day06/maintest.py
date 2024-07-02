@@ -138,9 +138,6 @@ class WindowClass(QMainWindow, form_class):
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
 		
 		self.dhtDevice = adafruit_dht.DHT11(board.D18)
-		self.fnd_timer = QtCore.QTimer(self)  # FND 업데이트를 위한 타이머 추가
-		self.fnd_timer.timeout.connect(self.update_fnd)  # 타이머가 timeout될 때 호출할 메서드 연결
-		self.fnd_number = 0  # FND에 표시할 숫자 초기화
 
 	def update_sensor_values(self):
 		try:
@@ -206,57 +203,35 @@ class WindowClass(QMainWindow, form_class):
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
 
-	def display_number_on_gpio(self, number):
-		digits_state = [GPIO.HIGH] * 4  # 모든 자리수의 상태를 저장
-		digit_values = []
-		
-		for i in range(4):
-			digit_values.append(number % 10)
-			number //= 10
-
-		for j in range(7):
-			for i in range(4):
-				GPIO.output(segments[j], num[digit_values[i]][j])
-				time.sleep(0.001)  # 짧은 지연 시간
-				
-		for i in range(4):
-			digits_state[i] = GPIO.LOW  # 모든 자리수를 활성화
-			GPIO.output(digits[i], digits_state[i])
-		time.sleep(0.001)  # 전체 자리수를 활성화한 후 지연
-		
-		for i in range(4):
-			digits_state[i] = GPIO.HIGH  # 모든 자리수를 비활성화
-			GPIO.output(digits[i], digits_state[i])
-
-
-	def update_fnd(self):
-		self.fnd_number = (self.fnd_number + 1) % 10000  # 숫자를 0에서 9999까지 증가
-		self.lcdfnd.display(self.fnd_number)  # 숫자를 QLCDNumber에 표시
-		self.display_number_on_gpio(self.fnd_number)  # 숫자를 GPIO에 표시
-
 	def fndonFunction(self):
-		self.fnd_timer.start(100)  # 100ms마다 FND 업데이트
-		# def display_number(number):
-		# 	for i in range(4):
-		# 		digit_value = number % 10
-		# 		number //= 10
-		# 		for j in range(7):
-		# 			GPIO.output(segments[j], num[digit_value][j])
-		# 		GPIO.output(digits[3 - i], GPIO.LOW)
-		# 		time.sleep(0.001)
-		# 		GPIO.output(digits[3 - i], GPIO.HIGH)
+		def display_number(number):
+			for i in range(4):
+				digit_value = number % 10
+				number //= 10
+				for j in range(7):
+					GPIO.output(segments[j], num[digit_value][j])
+				GPIO.output(digits[3 - i], GPIO.LOW)
+				time.sleep(0.001)
+				GPIO.output(digits[3 - i], GPIO.HIGH)
 
-		# number = 0
+		def update_display(number):
+			# 7세그먼트 디스플레이 업데이트
+			for _ in range(50):
+				display_number(number)
+			# lcdfnd 화면 업데이트
+			self.lcdfnd.display(number)
+
+		number = 0
 
 
-		# try:
-		# 	while True:
-		# 		number = (number + 1) % 10000
-		# 		for _ in range(50):
-		# 			display_number(number)
+		try:
+			while True:
+				number = (number + 1) % 10000
+				for _ in range(50):
+					display_number(number)
 
-		# except KeyboardInterrupt:
-		# 	GPIO.cleanup()
+		except KeyboardInterrupt:
+			GPIO.cleanup()
 
 	
 if __name__ == "__main__":
