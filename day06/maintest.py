@@ -243,7 +243,12 @@ class WindowClass(QMainWindow, form_class):
 		# 	GPIO.cleanup()
 
 	def fndoffFunction(self):
-		self.fnd_running = False
+		#self.fnd_running = False
+		self.fnd_thread = None
+		for digit in digits:
+			GPIO.output(digit, GPIO.HIGH)
+		for segment in segments:
+			GPIO.output(segment, GPIO.LOW)
 
 	def exitFunction(self):
 		self.update_timer.stop()  # 타이머 중지
