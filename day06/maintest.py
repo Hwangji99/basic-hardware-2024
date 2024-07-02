@@ -133,6 +133,7 @@ class WindowClass(QMainWindow, form_class):
 		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
 		self.btn_temhuon.clicked.connect(self.temhuonFunc)
 		self.btn_temhuoff.clicked.connect(self.temhuoffFunc)
+		self.btnexit.clicked.connect(self.exitFunction)  # btnexit 버튼 클릭 시 exitFunction 실행
 
 		self.worker_thread = WorkerThread()	# WorkerThread 객체 생성
 		self.worker_thread.buzzingChanged.connect(self.handleBuzzingChanged)	# WorkerThread의 buzzingChanged 시그널을 handleBuzzingChanged 메서드에 연결
@@ -238,6 +239,11 @@ def update_display(self):
 		self.current_number = (self.current_number + 1) % 10000
 		self.display_number(self.current_number)
 		self.lcdfnd.display(self.current_number)
+
+def exitFunction(self):
+        self.update_timer.stop()  # 타이머 중지
+        GPIO.cleanup()  # GPIO 정리
+        self.close()  # 창 닫기
 
 	
 if __name__ == "__main__":
