@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>-10</y>
+      <y>0</y>
       <width>691</width>
       <height>521</height>
      </rect>
@@ -384,6 +384,19 @@
      </property>
      <property name="text">
       <string>온습도 버튼</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_fndoff">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>440</y>
+       <width>99</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>LCD OFF</string>
      </property>
     </widget>
    </widget>
