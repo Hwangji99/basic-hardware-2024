@@ -128,7 +128,7 @@ class WindowClass(QMainWindow, form_class):
 		self.btn_ultraon.clicked.connect(self.ultraonFunction)
 		#self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
 		self.btn_fndon.clicked.connect(self.fndonFunction)
-		#self.btn_fndoff.clicked.connect(self.fndoffFunction)
+		self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
 		self.btn_buzzoff.clicked.connect(self.buzzoffFunction)
 		self.btn_temhuon.clicked.connect(self.temhuonFunc)
@@ -216,29 +216,29 @@ class WindowClass(QMainWindow, form_class):
 				time.sleep(0.001)
 				GPIO.output(digits[3 - i], GPIO.HIGH)
 
-		# def update_display(number):
-		# 	# 7세그먼트 디스플레이 업데이트
-		# 	for _ in range(50):
-		# 		display_number(number)
-		# 	# lcdfnd 화면 업데이트
-		# 	self.lcdfnd.display(number)
-
-		number = 0
-
-
-		try:
-			while True:
+		def update_display():
+			nonlocal number
+			while self.fnd_running:
 				number = (number + 1) % 10000
+				# 7세그먼트 디스플레이 업데이트
 				for _ in range(50):
 					display_number(number)
 
-		except KeyboardInterrupt:
-			GPIO.cleanup()
+		number = 0
+		self.fnd_running = True
+		threading.Thread(target=update_display, daemon=True).start()
 
-	def update_display(self):
-		self.current_number = (self.current_number + 1) % 10000
-		self.display_number(self.current_number)
-		self.lcdfnd.display(self.current_number)
+		# try:
+		# 	while True:
+		# 		number = (number + 1) % 10000
+		# 		for _ in range(50):
+		# 			display_number(number)
+
+		# except KeyboardInterrupt:
+		# 	GPIO.cleanup()
+
+	def fndoffFunction(self):
+		self.fnd_running = False
 
 	def exitFunction(self):
 		self.update_timer.stop()  # 타이머 중지
