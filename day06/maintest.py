@@ -139,6 +139,10 @@ class WindowClass(QMainWindow, form_class):
 		
 		self.dhtDevice = adafruit_dht.DHT11(board.D18)
 
+		self.fnd_update_timer = QtCore.QTimer(self)
+		self.fnd_update_timer.timeout.connect(self.update_display)
+		self.current_number = 0
+
 	def update_sensor_values(self):
 		try:
 			temp = dhtDevice.temperature
@@ -214,12 +218,12 @@ class WindowClass(QMainWindow, form_class):
 				time.sleep(0.001)
 				GPIO.output(digits[3 - i], GPIO.HIGH)
 
-		def update_display(number):
-			# 7세그먼트 디스플레이 업데이트
-			for _ in range(50):
-				display_number(number)
-			# lcdfnd 화면 업데이트
-			self.lcdfnd.display(number)
+		# def update_display(number):
+		# 	# 7세그먼트 디스플레이 업데이트
+		# 	for _ in range(50):
+		# 		display_number(number)
+		# 	# lcdfnd 화면 업데이트
+		# 	self.lcdfnd.display(number)
 
 		number = 0
 
@@ -232,6 +236,11 @@ class WindowClass(QMainWindow, form_class):
 
 		except KeyboardInterrupt:
 			GPIO.cleanup()
+
+def update_display(self):
+		self.current_number = (self.current_number + 1) % 10000
+		self.display_number(self.current_number)
+		self.lcdfnd.display(self.current_number)
 
 	
 if __name__ == "__main__":
