@@ -249,7 +249,7 @@ class WindowClass(QMainWindow, form_class):
 
 		self.lcdfnd.display(self.current_number)
 
-	def fdonFunction(self):
+	def fndonFunction(self):
 		self.update_timer.start(10)  # 10ms마다 업데이트
 		self.current_number = 0
 
