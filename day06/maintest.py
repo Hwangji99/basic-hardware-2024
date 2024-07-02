@@ -211,13 +211,17 @@ class WindowClass(QMainWindow, form_class):
 		for i in range(4):
 			digit_value = number % 10
 			number //= 10
-		for j in range(7):
-			GPIO.output(segments[j], num[digit_value][j])
-		digits_state[3 - i] = GPIO.LOW  # 현재 자리수를 활성화
-		GPIO.output(digits[3 - i], digits_state[3 - i])
-		time.sleep(0.001)  # 지연 시간 줄이기
-		digits_state[3 - i] = GPIO.HIGH  # 현재 자리수를 비활성화
-		GPIO.output(digits[3 - i], digits_state[3 - i])
+			for j in range(7):
+				GPIO.output(segments[j], num[digit_value][j])
+				digits_state[3 - i] = GPIO.LOW  # 현재 자리수를 활성화
+				GPIO.output(digits[3 - i], digits_state[3 - i])
+        # 시간 대기를 제거하여 깜빡임을 줄임
+        # time.sleep(0.001)
+    # 전체 자리수를 활성화한 후 모두 비활성화 
+		time.sleep(0.001)  # 기존의 time.sleep(0.001) 추가
+		for i in range(4):
+			digits_state[i] = GPIO.HIGH
+			GPIO.output(digits[i], digits_state[i])
 
 
 	def update_fnd(self):
