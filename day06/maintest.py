@@ -128,7 +128,7 @@ class WindowClass(QMainWindow, form_class):
 		#self.btngreen.clicked.connect(self.btngreenFunction)_sensor_values)  # 시그널 연결 삭제
 		self.led_off.clicked.connect(self.ledoffFunction)
 		self.btn_ultraon.clicked.connect(self.ultraonFunction)
-		self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
+		#self.btn_ultraoff.clicked.connect(self.ultraoffFunction)
 		self.btn_fndon.clicked.connect(self.fndonFunction)
 		self.btn_fndoff.clicked.connect(self.fndoffFunction)
 		self.btn_buzzon.clicked.connect(self.buzzonFunction)
@@ -207,9 +207,6 @@ class WindowClass(QMainWindow, form_class):
 
 		except  KeyboardInterrupt:
 			GPIO.cleanup()
-
-	def ultraoffFunction(self):
-		self.ultra_running = False
 
 	def fndonFunction(self):
 		def display_number(number):
